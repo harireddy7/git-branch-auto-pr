@@ -1,0 +1,27 @@
+on:
+  pull_request:
+    branches:
+      - dev
+      - stg
+
+jobs:
+  pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Log current branch name
+        run: |
+          echo "Current branch: ${{ github.head_ref }}"
+
+      - name: Log target branch name
+        run: |
+          echo "Target branch: ${{ github.base_ref }}"
+
+      - name: Log diff changes
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}...${{ github.head_ref }}
